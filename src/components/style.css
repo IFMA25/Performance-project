@@ -1,0 +1,45 @@
+.country-item {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 12px;
+  transition: background-color 0.3s;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.country-item:hover {
+  background-color: #f0f0f0;
+}
+
+.country-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.country-details p {
+  margin: 0;
+}
+
+.country-name {
+  margin: 0 0 5px;
+  font-weight: 800;
+}
+
+.country-data table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.country-data th,
+.country-data td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+
+.country-data th {
+  background-color: #f0f0f0;
+}
