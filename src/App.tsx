@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import { fetchDataCO2 } from './utils/fetchData';
-import type { CountryData } from './types';
+import type { CountryData, CountryDataKey } from './types';
 import './App.css';
 
 function App() {
   const [data, setData] = useState<CountryData[] | []>([]);
   const [year, setYear] = useState<number>(0);
+  const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [selectedColumns, setSelectedColumns] = useState<CountryDataKey[]>([]);
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -33,8 +35,21 @@ function App() {
 
   return (
     <>
-      <Header data={data} year={year} onYearChange={setYear} />
-      <Main data={data} year={year} />
+      <Header
+        data={data}
+        year={year}
+        onYearChange={setYear}
+        search={search}
+        onSearch={setSearch}
+        onAddColumns={setSelectedColumns}
+        selectedColumns={selectedColumns}
+      />
+      <Main
+        data={data}
+        year={year}
+        search={search}
+        selectedColumns={selectedColumns}
+      />
     </>
   );
 }

@@ -30,3 +30,5 @@ export type CountryData = {
   share_global_cumulative_co2: number;
   temperature_change_from_co2: number;
 };
+
+export type CountryDataKey = keyof CountryData;

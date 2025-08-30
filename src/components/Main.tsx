@@ -1,4 +1,4 @@
-import type { CountryData } from '../types';
+import type { CountryData, CountryDataKey } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import './style.css';
 import { useState } from 'react';
@@ -7,11 +7,17 @@ import { START_PERIOD } from './Header';
 type MainProps = {
   data: CountryData[];
   year: number;
+  search: string;
+  selectedColumns: CountryDataKey[];
 };
 
-const Main = ({ data, year }: MainProps) => {
+const Main = ({ data, year, search, selectedColumns }: MainProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const countryDataYear = data.filter((item) => item.year === year);
+  const countryDataYear = data.filter(
+    (item) =>
+      item.year === year &&
+      item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const toggleCountry = (name: string) => {
     setSelectedCountry(selectedCountry === name ? null : name);
@@ -33,7 +39,10 @@ const Main = ({ data, year }: MainProps) => {
               <p className="year">Year: {item.year}</p>
             </div>
             {selectedCountry === item.name && (
-              <div className="country-data">
+              <div
+                className="country-data"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <table>
                   <thead>
                     <tr>
@@ -41,6 +50,9 @@ const Main = ({ data, year }: MainProps) => {
                       <th>Population</th>
                       <th>co2</th>
                       <th>co2_per_capita</th>
+                      {selectedColumns.map((c) => (
+                        <th key={c}>{c}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
@@ -54,6 +66,9 @@ const Main = ({ data, year }: MainProps) => {
                           <td>{d.population}</td>
                           <td>{d.co2}</td>
                           <td>{d.co2_per_capita}</td>
+                          {selectedColumns.map((c) => (
+                            <td key={c}>{d[c]}</td>
+                          ))}
                         </tr>
                       ))}
                   </tbody>
