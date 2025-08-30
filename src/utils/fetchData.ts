@@ -3,7 +3,7 @@ import type { FetchData, CountryData } from '../types';
 const API_URL =
   'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json';
 
-export async function fetchDataCO2(): Promise<CountryData[] | undefined> {
+export async function fetchDataCO2(): Promise<CountryData[]> {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
@@ -32,6 +32,6 @@ export async function fetchDataCO2(): Promise<CountryData[] | undefined> {
     return countryData;
   } catch (error) {
     console.error(error);
-    return;
+    return [];
   }
 }

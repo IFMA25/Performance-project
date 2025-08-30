@@ -43,7 +43,6 @@ const Header = ({
 
   return (
     <header>
-      <h1>React Performance</h1>
       <div className="container header_container">
         <input
           type="text"
