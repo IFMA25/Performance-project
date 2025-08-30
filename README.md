@@ -14,9 +14,9 @@
 
   ![Flame Graph chart](screnshots-profiler/image.png)
 
-_after:_
+  _after:_
 
-![Flame Graph chart](screnshots-profiler/image-8.png)
+  ![Flame Graph chart](screnshots-profiler/image-8.png)
 
 - **Ranked Chart:**
 
@@ -30,10 +30,10 @@ _after:_
 
 ### Interaction 2: Sorting a column
 
-- **Commit Duration:** 157.5ms => 134ms
+- **Commit Duration:** 157.5ms => 125.7ms
 - **Render Duration:**
-  - Main: 147.5ms => 123ms
-  - Header: 16.2ms => 2.9ms
+  - Main: 147.5ms => 116.1ms
+  - Header: 16.2ms => 3.1ms
   - App: 0.5ms => 0.6ms
 
 - **Interactions:** Select sort by population
