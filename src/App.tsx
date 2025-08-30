@@ -31,10 +31,6 @@ function App() {
     loadData();
   }, []);
 
-  if (loading) {
-    return <div className="spinner"></div>;
-  }
-
   return (
     <>
       <Header
@@ -48,13 +44,17 @@ function App() {
         sort={sort}
         onSort={setSort}
       />
-      <Main
-        data={data}
-        year={year}
-        search={search}
-        selectedColumns={selectedColumns}
-        sort={sort}
-      />
+      {loading ? (
+        <div className="spinner"></div>
+      ) : (
+        <Main
+          data={data}
+          year={year}
+          search={search}
+          selectedColumns={selectedColumns}
+          sort={sort}
+        />
+      )}
     </>
   );
 }

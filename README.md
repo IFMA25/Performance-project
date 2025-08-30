@@ -1,69 +1,88 @@
-# React + TypeScript + Vite
+## Profiling Results
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Interaction 1: Searching a country
 
-Currently, two official plugins are available:
+- **Commit Duration:** 10.6ms
+- **Render Duration:**
+  - Main: 2.7ms
+  - Header: 7.1ms
+  - App: 0.4ms
+- **Interactions:** Input change
+- **Flamegraph:**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  _before:_
 
-## Expanding the ESLint configuration
+![Flame Graph chartbefore](screnshots-profiler/image.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Ranked Chart:**
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  _before:_
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+![Ranked chartbefore](screnshots-profiler/image-1.png)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Interaction 2: Sorting a column
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+- **Commit Duration:** 157.5ms
+- **Render Duration:**
+  - Main: 147.5ms
+  - Header: 16.2ms
+  - App: 0.5ms
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+- **Interactions:** Select sort by population
+- **Flamegraph:**
+
+  _before:_
+
+![Flame Graph chart before](screnshots-profiler/image-2.png)
+
+- **Ranked Chart:**
+
+  _before:_
+
+  ![Ranked chart before](screnshots-profiler/image-3.png)
+
+---
+
+### Interaction 3: Selecting another year
+
+- **Commit Duration:** 152.6ms
+- **Render Duration:**
+  - Main: 126.6ms
+  - Header: 7.3ms
+  - App: 0.7ms
+- **Interactions:** Click select and change year
+- **Flamegraph:**
+
+  _before:_
+
+  ![Flame Graph chart before](screnshots-profiler/image-5.png)
+
+- **Ranked Chart:**
+
+  _before:_
+
+  ![Ranked chart before](screnshots-profiler/image-4.png)
+
+---
+
+### Interaction 4: Adding columns
+
+- **Commit Duration:** 136.6ms
+- **Render Duration (главные компоненты):**
+  - Main: 101.9ms
+  - Header: 6ms
+  - App: 0.3ms
+- **Interactions:** Checkbox toggle
+- **Flamegraph:**
+
+  _before:_
+
+  ![Flame Graph chart before](screnshots-profiler/image-6.png)
+
+- **Ranked Chart:**
+
+  _before:_
+
+  ![Ranked chart before](screnshots-profiler/image-7.png)
