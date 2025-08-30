@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import type { CountryDataKey, SortOption } from '../types';
@@ -11,6 +11,8 @@ const AppContent = () => {
   const [search, setSearch] = useState<string>('');
   const [selectedColumns, setSelectedColumns] = useState<CountryDataKey[]>([]);
   const [sort, setSort] = useState<SortOption>('population-asc');
+
+  const selectedColumnsMemo = useMemo(() => selectedColumns, [selectedColumns]);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -35,7 +37,7 @@ const AppContent = () => {
         search={search}
         onSearch={handleSearch}
         onAddColumns={handleAddColumns}
-        selectedColumns={selectedColumns}
+        selectedColumns={selectedColumnsMemo}
         sort={sort}
         onSort={handleSort}
       />
@@ -43,11 +45,11 @@ const AppContent = () => {
         data={data}
         year={year}
         search={search}
-        selectedColumns={selectedColumns}
+        selectedColumns={selectedColumnsMemo}
         sort={sort}
       />
     </>
   );
 };
 
-export default AppContent;
+export default memo(AppContent);
