@@ -1,8 +1,6 @@
 import type { CountryData, CountryDataKey, SortOption } from '../types';
-import { v4 as uuidv4 } from 'uuid';
-import './style.css';
-import { useState } from 'react';
-import { START_PERIOD } from './Header';
+import { useState, useMemo, memo } from 'react';
+import CountryTable from './CountryTable';
 
 type MainProps = {
   data: CountryData[];
@@ -14,45 +12,46 @@ type MainProps = {
 
 const Main = ({ data, year, search, selectedColumns, sort }: MainProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const countryDataYear = data.filter(
-    (item) =>
-      item.year === year &&
-      item.name.toLowerCase().includes(search.toLowerCase())
+
+  const countryDataYear = useMemo(
+    () =>
+      data
+        .filter(
+          (item) =>
+            item.year === year &&
+            item.name.toLowerCase().includes(search.toLowerCase())
+        )
+        .sort((a, b) => {
+          switch (sort) {
+            case 'population-asc':
+              return (a.population as number) - (b.population as number);
+            case 'population-desc':
+              return (b.population as number) - (a.population as number);
+            case 'name-asc':
+              return a.name.localeCompare(b.name, 'en', {
+                sensitivity: 'base',
+              });
+            case 'name-desc':
+              return b.name.localeCompare(a.name, 'en', {
+                sensitivity: 'base',
+              });
+            default:
+              return 0;
+          }
+        }),
+    [data, year, search, sort]
   );
 
   const toggleCountry = (name: string) => {
-    setSelectedCountry(selectedCountry === name ? null : name);
+    setSelectedCountry((prev) => (prev === name ? null : name));
   };
-
-  countryDataYear.sort((a, b) => {
-    switch (sort) {
-      case 'population-asc': {
-        const popA = typeof a.population === 'number' ? a.population : Infinity;
-        const popB = typeof b.population === 'number' ? b.population : Infinity;
-        return popA - popB;
-      }
-      case 'population-desc': {
-        const popA =
-          typeof a.population === 'number' ? a.population : -Infinity;
-        const popB =
-          typeof b.population === 'number' ? b.population : -Infinity;
-        return popB - popA;
-      }
-      case 'name-asc':
-        return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
-      case 'name-desc':
-        return b.name.localeCompare(a.name, 'en', { sensitivity: 'base' });
-      default:
-        return 0;
-    }
-  });
 
   return (
     <main>
       <ul>
-        {countryDataYear.map((item: CountryData) => (
+        {countryDataYear.map((item) => (
           <li
-            key={uuidv4()}
+            key={item.name}
             className="country-item"
             onClick={() => toggleCountry(item.name)}
           >
@@ -67,36 +66,11 @@ const Main = ({ data, year, search, selectedColumns, sort }: MainProps) => {
                 className="country-data"
                 onClick={(e) => e.stopPropagation()}
               >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Year</th>
-                      <th>Population</th>
-                      <th>co2</th>
-                      <th>co2_per_capita</th>
-                      {selectedColumns.map((c) => (
-                        <th key={c}>{c}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data
-                      .filter(
-                        (d) => d.name === item.name && d.year >= START_PERIOD
-                      )
-                      .map((d) => (
-                        <tr key={d.year}>
-                          <td>{d.year}</td>
-                          <td>{d.population}</td>
-                          <td>{d.co2}</td>
-                          <td>{d.co2_per_capita}</td>
-                          {selectedColumns.map((c) => (
-                            <td key={c}>{d[c]}</td>
-                          ))}
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                <CountryTable
+                  data={data}
+                  countryName={item.name}
+                  selectedColumns={selectedColumns}
+                />
               </div>
             )}
           </li>
@@ -106,4 +80,4 @@ const Main = ({ data, year, search, selectedColumns, sort }: MainProps) => {
   );
 };
 
-export default Main;
+export default memo(Main);

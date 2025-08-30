@@ -1,8 +1,9 @@
 import { createPortal } from 'react-dom';
 import OverlayModal from './OverlayModal';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './style.css';
 import type { CountryDataKey } from '../types';
+import Checkboxes from './Checkboxes';
 
 export interface ModalProps {
   onClose: () => void;
@@ -37,16 +38,14 @@ const Modal = ({ onClose, onSubmit, initSelectedColumns }: ModalProps) => {
     return () => document.removeEventListener('keydown', onEsc);
   }, [onClose]);
 
-  const handleCheckInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-    const column = COLUMN_NAMES.find((c) => c === value);
-    if (!column) {
-      return;
-    }
-    setSelectedColumns((prev) =>
-      checked ? [...prev, column] : prev.filter((c) => c != column)
-    );
-  };
+  const handleCheckboxChange = useCallback(
+    (column: CountryDataKey, checked: boolean) => {
+      setSelectedColumns((prev) =>
+        checked ? [...prev, column] : prev.filter((c) => c !== column)
+      );
+    },
+    []
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,17 +61,11 @@ const Modal = ({ onClose, onSubmit, initSelectedColumns }: ModalProps) => {
         <div className="modal-content">
           <h2>Choose column for country details</h2>
           <form onSubmit={handleSubmit}>
-            {COLUMN_NAMES.map((columnName) => (
-              <label key={columnName}>
-                <input
-                  type="checkbox"
-                  value={columnName}
-                  onChange={handleCheckInput}
-                  checked={selectedColumns.includes(columnName)}
-                />
-                {columnName}
-              </label>
-            ))}
+            <Checkboxes
+              columns={COLUMN_NAMES}
+              selectedColumns={selectedColumns}
+              onChange={handleCheckboxChange}
+            />
             <button className="btn-add-submit">Add columns</button>
           </form>
         </div>

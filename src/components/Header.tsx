@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import type { CountryData, CountryDataKey, SortOption } from '../types';
 import Modal from './Modal';
 
@@ -27,11 +27,17 @@ const Header = ({
   sort,
   onSort,
 }: HeaderProps) => {
-  const years = Array.from(
-    new Set(
-      data.flatMap((item) => item.year).filter((year) => year >= START_PERIOD)
-    )
-  ).sort((a, b) => b - a);
+  const years = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          data
+            .flatMap((item) => item.year)
+            .filter((year) => year >= START_PERIOD)
+        )
+      ).sort((a, b) => b - a),
+    [data]
+  );
 
   const [showModal, setShowModal] = useState(false);
 
@@ -97,4 +103,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default memo(Header);

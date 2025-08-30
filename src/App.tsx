@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import { fetchDataCO2 } from './utils/fetchData';
@@ -31,18 +31,26 @@ function App() {
     loadData();
   }, []);
 
+  const handleYearChange = useCallback((year: number) => setYear(year), []);
+  const handleSearch = useCallback((value: string) => setSearch(value), []);
+  const handleAddColumns = useCallback(
+    (columns: CountryDataKey[]) => setSelectedColumns(columns),
+    []
+  );
+  const handleSort = useCallback((value: SortOption) => setSort(value), []);
+
   return (
     <>
       <Header
         data={data}
         year={year}
-        onYearChange={setYear}
+        onYearChange={handleYearChange}
         search={search}
-        onSearch={setSearch}
-        onAddColumns={setSelectedColumns}
+        onSearch={handleSearch}
+        onAddColumns={handleAddColumns}
         selectedColumns={selectedColumns}
         sort={sort}
-        onSort={setSort}
+        onSort={handleSort}
       />
       {loading ? (
         <div className="spinner"></div>
