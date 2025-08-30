@@ -23,10 +23,20 @@ const Main = ({ data, year, search, selectedColumns, sort }: MainProps) => {
         )
         .sort((a, b) => {
           switch (sort) {
-            case 'population-asc':
-              return (a.population as number) - (b.population as number);
-            case 'population-desc':
-              return (b.population as number) - (a.population as number);
+            case 'population-asc': {
+              const aPop =
+                typeof a.population === 'number' ? a.population : Infinity;
+              const bPop =
+                typeof b.population === 'number' ? b.population : Infinity;
+              return aPop - bPop;
+            }
+            case 'population-desc': {
+              const aPop =
+                typeof a.population === 'number' ? a.population : -Infinity;
+              const bPop =
+                typeof b.population === 'number' ? b.population : -Infinity;
+              return bPop - aPop;
+            }
             case 'name-asc':
               return a.name.localeCompare(b.name, 'en', {
                 sensitivity: 'base',
