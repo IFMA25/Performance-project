@@ -32,3 +32,9 @@ export type CountryData = {
 };
 
 export type CountryDataKey = keyof CountryData;
+
+export type SortOption =
+  | 'population-asc'
+  | 'population-desc'
+  | 'name-asc'
+  | 'name-desc';

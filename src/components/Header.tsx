@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { CountryData, CountryDataKey } from '../types';
+import type { CountryData, CountryDataKey, SortOption } from '../types';
 import Modal from './Modal';
 
 export const START_PERIOD = 2005;
@@ -12,6 +12,8 @@ type HeaderProps = {
   onSearch: (value: string) => void;
   onAddColumns: (columns: CountryDataKey[]) => void;
   selectedColumns: CountryDataKey[];
+  sort: SortOption;
+  onSort: (value: SortOption) => void;
 };
 
 const Header = ({
@@ -22,6 +24,8 @@ const Header = ({
   onSearch,
   onAddColumns,
   selectedColumns,
+  sort,
+  onSort,
 }: HeaderProps) => {
   const years = Array.from(
     new Set(
@@ -62,6 +66,20 @@ const Header = ({
         >
           Add column
         </button>
+        <div className="sort">
+          <label>
+            Sort by:
+            <select
+              value={sort}
+              onChange={(e) => onSort(e.target.value as SortOption)}
+            >
+              <option value="population-asc">Population (Low to High)</option>
+              <option value="population-desc">Population (High to Low)</option>
+              <option value="name-asc">Country Name (A/Z)</option>
+              <option value="name-desc">Country Name (Z/A)</option>
+            </select>
+          </label>
+        </div>
       </div>
       {showModal && (
         <Modal

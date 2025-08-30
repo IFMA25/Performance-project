@@ -52,11 +52,11 @@
 .header_container {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .search {
-  width: 70%;
+  width: calc(70% - 20px);
   padding: 5px 10px;
   font-size: 16px;
   font-weight: 600;
@@ -68,15 +68,11 @@
   font-weight: 300;
 }
 .year-select {
-  width: 15%;
-  font-size: 16px;
-  font-weight: 600;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: calc(15% - 20px);
 }
 
 .btn-add {
-  width: 15%;
+  width: calc(15% - 20px);
   padding: 5px 10px;
   font-size: 16px;
   font-weight: 600;
@@ -137,4 +133,20 @@
   border-radius: 4px;
   background-color: #ffffff;
   margin: 20px auto 0;
+}
+
+.sort {
+  width: 100%;
+  display: flex;
+  margin-top: 25px;
+  gap: 30px;
+  justify-content: right;
+}
+
+.sort label {
+  color: white;
+}
+
+.sort select {
+  margin-left: 15px;
 }

@@ -1,4 +1,4 @@
-import type { CountryData, CountryDataKey } from '../types';
+import type { CountryData, CountryDataKey, SortOption } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import './style.css';
 import { useState } from 'react';
@@ -9,9 +9,10 @@ type MainProps = {
   year: number;
   search: string;
   selectedColumns: CountryDataKey[];
+  sort: SortOption;
 };
 
-const Main = ({ data, year, search, selectedColumns }: MainProps) => {
+const Main = ({ data, year, search, selectedColumns, sort }: MainProps) => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const countryDataYear = data.filter(
     (item) =>
@@ -22,6 +23,29 @@ const Main = ({ data, year, search, selectedColumns }: MainProps) => {
   const toggleCountry = (name: string) => {
     setSelectedCountry(selectedCountry === name ? null : name);
   };
+
+  countryDataYear.sort((a, b) => {
+    switch (sort) {
+      case 'population-asc': {
+        const popA = typeof a.population === 'number' ? a.population : Infinity;
+        const popB = typeof b.population === 'number' ? b.population : Infinity;
+        return popA - popB;
+      }
+      case 'population-desc': {
+        const popA =
+          typeof a.population === 'number' ? a.population : -Infinity;
+        const popB =
+          typeof b.population === 'number' ? b.population : -Infinity;
+        return popB - popA;
+      }
+      case 'name-asc':
+        return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+      case 'name-desc':
+        return b.name.localeCompare(a.name, 'en', { sensitivity: 'base' });
+      default:
+        return 0;
+    }
+  });
 
   return (
     <main>

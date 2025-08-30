@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import { fetchDataCO2 } from './utils/fetchData';
-import type { CountryData, CountryDataKey } from './types';
+import type { CountryData, CountryDataKey, SortOption } from './types';
 import './App.css';
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [selectedColumns, setSelectedColumns] = useState<CountryDataKey[]>([]);
+  const [sort, setSort] = useState<SortOption>('population-asc');
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -43,12 +45,15 @@ function App() {
         onSearch={setSearch}
         onAddColumns={setSelectedColumns}
         selectedColumns={selectedColumns}
+        sort={sort}
+        onSort={setSort}
       />
       <Main
         data={data}
         year={year}
         search={search}
         selectedColumns={selectedColumns}
+        sort={sort}
       />
     </>
   );
